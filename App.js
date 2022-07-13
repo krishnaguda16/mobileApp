@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import theme from './src/themes/nativeTheme'
 import {StatusBar} from "react-native";
 import GetLocation from 'react-native-get-location'
+import { convertRemToAbsolute } from 'native-base/lib/typescript/theme/tools';
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
     })
     .then(location => {
       console.log(location);
+      postData(location)
       setLocationText(location)
     })
     .catch(error => {
@@ -36,6 +38,22 @@ const App = () => {
 
 
 
+  const postData = async (lt) => {
+    let data = {
+      "appName": "test",
+      "latitude": lt.longitude,
+      "longitude": lt.latitude
+
+    }
+    await axios.post("https://otrackerdevapi.onpassive.com/notification/pushNotifications", data)
+    .then(res => {
+      console.log("response data")
+      console.log(res)
+    })
+    .catch(err => console.log(err))
+  }
+
+
 
   return (
     <Provider store={store} theme={theme}>
@@ -44,8 +62,8 @@ const App = () => {
           backgroundColor="#eee"
       />
       <NativeBaseProvider>
-          <Text>{locationText ? `Longitude: ${locationText.longitude}, Latitude: ${locationText.latitude}` : null}</Text>
-          <Button onPress={() => getCurretnLocation()}>Get Current Location</Button>
+          {/* <Text>{locationText ? `Longitude: ${locationText.longitude}, Latitude: ${locationText.latitude}` : null}</Text> */}
+          {/* <Button onPress={() => getCurretnLocation()}>Get Current Location</Button> */}
           <AppStack />
       </NativeBaseProvider>
     </Provider>
