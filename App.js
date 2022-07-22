@@ -95,19 +95,24 @@ const App = () => {
 
 
   const postData = async (lt,tokenData) => {
-    let data = {
-      "appName": "test",
-      "latitude": lt.longitude,
-      "longitude": lt.latitude,
-      "tokenData":tokenData
+    if(tokenData == null) {
+        console.log(tokenData)
+    }else {
+          let data = {
+            "appName": "test",
+            "latitude": lt.longitude,
+            "longitude": lt.latitude,
+            "tokenData":tokenData
 
+          }
+          await axios.post("https://otrackerdevapi.onpassive.com/notification/pushNotifications", data)
+          .then(res => {
+            console.log("response data")
+            console.log(res)
+          })
+          .catch(err => console.log(err)) 
     }
-    await axios.post("https://otrackerdevapi.onpassive.com/notification/pushNotifications", data)
-    .then(res => {
-      console.log("response data")
-      console.log(res)
-    })
-    .catch(err => console.log(err))
+    
   }
 
 
